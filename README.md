@@ -1,327 +1,376 @@
-# Front-End Development: Weeks 1–4 Illustrated Guide
+# Front-End Development: Class Sessions 1–4
 
-A beginner-friendly companion to the supplied lectures and practicals.
+A combined beginner guide based only on the supplied lecture notes, practical briefs, quick reference and starter materials.
 
 ## How to use this guide
 
-Read the diagram, follow the small example, then try the checks in your practical brief. This is a concept guide, not a complete set of submission solutions. Keep each week's files in a separate folder: some filenames repeat across weeks.
+These are class sessions. Work through one session at a time. Read the explanation, trace the example, make the required changes, and run every check. The diagrams are teaching illustrations of the supplied concepts, not screenshots of completed applications.
 
-## The four-week journey
+Sessions 1–2 use Activity Finder. Session 3 uses an independent Activity Directory. Session 4 uses Campus Workshop Sign-up. You do not have to turn all four practicals into one application.
 
-| Week | Main question | Practical |
-|---|---|---|
-| 1 | What do HTML, CSS and JavaScript do? | Activity Finder: foundations |
-| 2 | How can functions process activity data? | Activity Finder: functions and structured data |
-| 3 | How can a page respond to user actions? | Activity Directory |
-| 4 | How can HTML and CSS make a form clearer and easier to use? | Campus Workshop Sign-up |
+Edit source files, save and reload to check changes. Console experiments are temporary. Explain, verify and acknowledge any AI help. Check Brightspace for exact submission instructions.
 
-Weeks 1–2 share the Activity Finder context. Week 3 is an independent scenario. Week 4 is a separate sign-up page. Do not assume you must carry the same code forward for all four weeks.
+## Class Session 1 — HTML, CSS and JavaScript foundations
 
-## Week 1 — HTML, CSS and JavaScript foundations
+### 1.1 One page, three responsibilities
 
-### 1. Three technologies, three jobs
+![HTML provides meaning, CSS presentation, and JavaScript behaviour.](images/01_page_responsibilities.png)
 
-![HTML provides structure, CSS provides appearance, and JavaScript provides behaviour.](images/01_web_page_roles.png)
+- HTML gives content structure and meaning. A heading names content; an article groups related content.
+- CSS controls presentation, including colour, spacing and borders.
+- JavaScript can add custom behaviour, such as testing whether a title matches a query.
 
-HTML describes content and structure. CSS controls how that content looks. JavaScript performs instructions, such as testing whether an activity matches a query.
+A Console result is not a page update. console.log() displays information in the browser Console. The Session 1 static paragraph does not automatically change when a matching array is logged.
 
-```html
-<h1>Find a Campus Activity</h1>
+### 1.2 Make matching case-insensitive
+
+![Lowercase comparison copies match while the original Chess title is kept.](images/02_case_matching.png)
+
+A query is the text you search for. Normalising means putting the compared text into a consistent form. Here, convert both the title and query to lowercase for comparison.
+
+```js
+title.toLowerCase().includes(query.toLowerCase())
 ```
 
-```css
-h1 {
-  color: navy;
+Read this from left to right: make a lowercase version of the title, then check whether it contains a lowercase version of the query. Keep the original title in the matching result. Do not replace the stored title with lowercase text merely to search it.
+
+### 1.3 Read basic JavaScript carefully
+
+These small examples appear in the supplied lecture:
+
+```js
+"2" + 1           // "21"
+Number("2") + 1   // 3
+"2" === 2         // false
+"2" == 2          // true
+```
+
+Convert deliberately and prefer strict equality (===) in this lesson. Check an array's length to find out whether it is empty. An empty JavaScript array is truthy, so testing the array itself does not test whether it contains results.
+
+```js
+if (titles.length === 0) {
+  console.log("No results");
 }
 ```
 
-```javascript
-console.log("Ready to search");
-```
+### 1.4 Activity Finder practical
 
-What to notice: the heading and its colour appear on the page. The logged message appears in DevTools Console. Logging a result does not automatically update a paragraph on the page.
-
-### 2. Case-insensitive matching
-
-![Lowercase copies of the original title and query are compared while the original title is retained.](images/02_case_matching.png)
-
-A case-insensitive comparison ignores differences between uppercase and lowercase letters. Make lowercase copies of both strings for the comparison; do not overwrite the activity titles.
-
-```javascript
-const title = "Chess";
-const query = "CHESS";
-const matches = title.toLowerCase().includes(query.toLowerCase());
-console.log(matches); // true
-console.log(title);   // "Chess"
-```
-
-`includes()` checks whether one string contains another. The empty string matches every title in this practical.
-
-### Week 1 checks
+1. Change the visible heading to something meaningful.
+2. Change one CSS declaration with an obvious visual effect.
+3. Correct matching so both compared strings are normalised.
+4. Save and reload for each check.
+5. Explain the changes and any AI assistance in README.txt.
 
 | Query | Expected Console result |
 |---|---|
-| `"chess"` | `["Chess"]` |
-| `"zzz"` | `[]` |
-| `""` | `["Chess", "Coding", "Cycling"]` |
+| "chess" | ["Chess"] |
+| "zzz" | [] |
+| "" | ["Chess", "Coding", "Cycling"] |
 
-Change the heading and one visibly noticeable CSS declaration. Save and reload after each change. Complete the README explanations and help acknowledgement.
+Submit index.html and README.txt before Class Session 2, subject to the exact Brightspace deadline. Adding a fourth activity is optional after the core work.
 
-## Week 2 — Functions and structured data
+Sources: Lesson 01 lecture; Lesson 01 practical brief; Lesson 01 README.
 
-### 3. Function inputs and returned results
+## Class Session 2 — Functions and structured data
 
-![A function call supplies an argument, a parameter receives it, and return sends the result to the caller.](images/03_function_flow.png)
+### 2.1 Pass inputs in and return results out
 
-A function is a named piece of reusable code. A parameter names an input inside the function. An argument is the actual value supplied in a call. `return` sends the result back.
+![Arguments enter matchesTitle through parameters and a Boolean result is returned.](images/03_function_flow.png)
 
-```javascript
-function label(activity) {
+```js
+function matchesTitle(title, query) {
+  return title.toLowerCase().includes(query.toLowerCase());
+}
+const result = matchesTitle("Chess", "CHESS");
+console.log(result); // true
+```
+
+- A function groups reusable steps.
+- Parameters are the names in its definition: title and query.
+- Arguments are values supplied at the call: "Chess" and "CHESS".
+- return sends the result to the caller.
+- console.log() displays information; it does not replace return.
+
+Scope describes where a variable name can be used. A variable declared inside a function cannot be accessed by that name outside it. Its value can leave through return. A function may read enclosing variables, but parameters make required inputs visible.
+
+### 2.2 One object describes one activity
+
+```js
+const activity = {
+  title: "Chess Club",
+  category: "Games",
+  location: "Studio 2",
+  isFull: false
+};
+```
+
+An object groups related properties. activity.title reads the title property. An array holds several activity objects. The supplied set contains Chess Club, Coding Workshop and Cycling Group.
+
+The data has an interface purpose:
+
+| Property | Display purpose |
+|---|---|
+| title | Card heading |
+| category and location | Supporting details |
+| isFull | Interpreted as Available or Full |
+| Derived status class | status-available or status-full |
+
+Users should see meaningful status text, not the raw Boolean false. Use the supplied getStatus(activity) helper to keep the status text and CSS class consistent.
+
+### 2.3 filter() and map() do different jobs
+
+![filter selects a matching activity object; map prepares one summary for every activity.](images/04_filter_and_map.png)
+
+A callback is a function another operation calls. filter() and map() call a callback once per activity.
+
+- filter(): Which items should remain? Its callback returns a test; the result is a new array containing selected objects.
+- map(): What should every item become? Each callback result becomes an element in the new array.
+
+With a braced arrow-function body, write return explicitly:
+
+```js
+(activity) => {
   return activity.title;
 }
-
-const chessActivity = { title: "Chess Club" };
-const result = label(chessActivity);
-console.log(result); // "Chess Club"
 ```
 
-Here, `activity` is the parameter and `chessActivity` is the argument. The parameter name belongs to the function's scope: you cannot use that local name outside the function to access its input.
+The expression-body form returns implicitly:
 
-`console.log()` helps you inspect a value; it does not replace returning a result to the caller.
-
-### 4. Objects inside an array
-
-![An activities array contains separate objects, each grouping properties about one activity.](images/04_array_objects.png)
-
-An object groups related properties about one thing. An array holds several items in order.
-
-```javascript
-const activities = [
-  { title: "Chess Club", category: "Games", location: "Studio 2", isFull: false },
-  { title: "Coding Workshop", category: "Technology", location: "Lab 4", isFull: true },
-  { title: "Cycling Group", category: "Sport", location: "Sports Hall", isFull: false }
-];
-
-console.log(activities[0].title); // "Chess Club"
-```
-
-Array positions start at zero. `activities[0]` reads the first object. `.title` reads that object's title property. `isFull` is a Boolean: `true` or `false`, not a quoted word.
-
-`const` prevents reassignment of the variable; it does not freeze an object's properties. Nevertheless, this practical's search should not deliberately change the supplied activity objects.
-
-### 5. filter() versus map()
-
-![filter selects matching input objects, whereas map prepares one output value per input item.](images/05_filter_map.png)
-
-Use `filter()` to select items. Its callback returns a value that determines whether each item stays; the examples use `true` or `false`.
-
-```javascript
-const available = activities.filter((activity) => {
-  return !activity.isFull;
-});
-```
-
-`!` means “not”, so this selects activities that are not full. The result is a new array containing the selected original objects, not deep copies of them.
-
-Use `map()` to prepare one result per item. Its callback's returned value becomes one element of the output array.
-
-```javascript
-const titles = activities.map((activity) => {
-  return activity.title;
-});
-```
-
-A callback is a function passed into another function to be called as part of its work. These two arrow-function forms both return a title:
-
-```javascript
-(activity) => { return activity.title; }
+```js
 (activity) => activity.title
 ```
 
-With braces, write `return` explicitly. Forgetting it in a `map()` callback often produces `undefined` entries.
+Missing return can cause a filter to keep nothing or a map to produce undefined values.
 
-### Week 2 practical connections
+### 2.4 const does not freeze contents
 
-- Complete `searchActivities(items, query)` using case-insensitive title matching.
-- Use the supplied `getStatus(activity)` helper.
-- Complete `buildActivitySummaries(items)` so each summary has `title`, `details`, `statusText` and `statusClass`.
-- Make status text agree with its CSS class.
-- Update the static HTML card manually to represent Chess Club.
+```js
+const activity = { isFull: false };
+activity.isFull = true; // allowed
+// activity = {};      // reassignment error
+```
 
-Creating summary objects does not automatically render them onto the page. DOM rendering and events are not required in this practical.
+const prevents reassignment of the variable, not changes to object properties or array contents. Two variables can also refer to the same object; changing that shared object is visible through either reference. For this practical, search should return matching original objects without deliberately changing them.
 
-Check `CHESS`, `work`, `zzz`, an empty query and an empty input array. Check that three input activities produce three summaries. Explain your work in the README.
+### 2.5 Activity Finder practical
 
-## Week 3 — DOM interaction and events
+1. Inspect the activity properties.
+2. Complete searchActivities(items, query) using filter() and case-insensitive title matching.
+3. Use getStatus(activity).
+4. Complete buildActivitySummaries(items) using map(). Each summary needs title, details, statusText and statusClass.
+5. Manually update the static HTML card to represent Chess Club.
+6. Run the checks and explain the functions in README.txt.
 
-### 6. Select elements, then respond to events
+| Check | Expected result |
+|---|---|
+| CHESS | Chess Club object |
+| work | Coding Workshop object |
+| zzz | [] |
+| Empty query | All three objects |
+| Empty items array | [] |
+| Summaries | Three summary objects; status text and class agree |
 
-![Submit, category change and Clear click all call one shared function that updates the existing cards and status text.](images/06_dom_events.png)
+This session does not require DOM rendering or event handlers. Preparing a summary object does not automatically update HTML. Submit before Class Session 3 according to Brightspace.
 
-The DOM is the browser's representation of the page that JavaScript can read and change. Select an element before trying to use it.
+Sources: Lesson 02 lecture, quick reference, practical brief and starter JavaScript.
 
-```javascript
+## Class Session 3 — DOM interaction and events
+
+### 3.1 Select the page elements first
+
+The DOM is the browser's live page structure. JavaScript can read and change its elements. HTML is the source; the DOM is the current structure in memory.
+
+```js
 const form = document.querySelector("#activity-form");
 const cards = document.querySelectorAll(".activity-card");
-
-console.log(form !== null); // should be true
-console.log(cards.length);  // should be 8
 ```
 
-`#` selects by ID; `.` selects by class. `querySelector()` returns one matching element or `null`. `querySelectorAll()` returns a NodeList, a collection of matching elements. Check its length, not whether it is null.
+querySelector() returns one matching element or null. querySelectorAll() returns a NodeList, a collection of selected elements. An empty NodeList has length 0; it is not null.
 
-An event is something the page can respond to, such as form submission or a button click. An event handler is the function that runs in response.
+Verify before continuing:
 
-The three required handlers reuse `filterActivities(query, category)`:
+| Element | Selector | Expected check |
+|---|---|---|
+| Form | #activity-form | Reference is not null |
+| Keyword input | #keyword | Reference is not null |
+| Category select | #category | Reference is not null |
+| Clear button | #clear | Reference is not null |
+| Status | #status | Reference is not null |
+| Cards | .activity-card | length is 8 |
 
-| Event | Handler responsibility |
+The starter loads app.js with defer so the elements exist when the code runs. If a reference is null, check both the selector spelling and when the script runs.
+
+### 3.2 Keep one decision-and-update path
+
+![Submit, category change and Clear call the same filterActivities function.](images/05_shared_interaction.png)
+
+Follow the supplied interaction model:
+
+Select → iterate → listen → read → decide → update → check.
+
+An event is an action the page can respond to. A listener connects an event name to a handler function. The handler runs when that event occurs.
+
+| Event | Element | Handler responsibility |
+|---|---|---|
+| submit | Form | Prevent reload; read the trimmed keyword and selected category; call the shared function |
+| change | Category select | Read current values; call the shared function |
+| click | Clear button | Reset keyword to "" and category to "all"; call the shared function |
+
+Read controls with .value. Read the text inside a card with .textContent. trim() removes spaces at the start and end of a string.
+
+### 3.3 Both keyword and category must match
+
+![Only a card that passes both tests remains shown.](images/06_both_conditions.png)
+
+The supplied cards carry both activity-card and a category class, such as arts. Option values match those category class names.
+
+Inside filterActivities(query, category):
+
+1. Start the visible count at zero.
+2. Use forEach() to process one card at a time.
+3. Compare lowercase card text with the lowercase query.
+4. Check the category class with classList.contains(category). The category "all" matches every card.
+5. Show the card only if keyword AND category match.
+6. Toggle is-hidden on non-matching cards and count those left shown.
+7. Set the status with textContent. Use "1 activity found" for one result and the plural for other counts.
+
+The supplied CSS makes .activity-card.is-hidden use display: none. JavaScript chooses the state; CSS controls how that state appears.
+
+### 3.4 Activity Directory practical checks
+
+Edit app.js only for the core practical. Leave supplied HTML and CSS unchanged.
+
+| Check | Expected result |
 |---|---|
-| Form `submit` | Prevent reload, read the trimmed keyword and current category, then filter |
-| Category `change` | Read the current controls, then filter |
-| Clear button `click` | Reset keyword to `""` and category to `"all"`, then filter |
+| Empty keyword + All categories, then Search | All 8 cards; "8 activities found" |
+| Keyword club | Only cards containing club |
+| Keyword zzz | No cards; status reports 0 |
+| Empty keyword + Arts | Only Arts cards |
+| Keyword club + Arts | Only cards matching both |
+| Clear | Empty keyword, All categories, all 8 cards |
 
-Keep the decision logic in the shared function rather than copying it into every handler.
+For every check, shown cards and status text must agree. Debug in order: references → collection length → handler → current values → condition → class/text update → visible result.
 
-### 7. Keyword AND category
+Optional only after all six checks pass: live filtering with input; Escape-to-clear with keydown; or create and append a card. If a card is added after the original selection, select the cards again inside the filtering function so the new card is included.
 
-![Illustrative card decisions show that both the keyword and category must match for a card to remain visible.](images/07_matching_conditions.png)
+Submit app.js together with index.html and styles.css according to Brightspace instructions.
 
-The cards in the diagram are illustrative, not an inventory of the eight starter cards.
+Sources: Lesson 03 lecture, Activity Directory brief and supplied CSS.
 
-```javascript
-const matchesKeyword = card.textContent.toLowerCase().includes(query.toLowerCase());
-const matchesCategory = category === "all" || card.classList.contains(category);
-const shouldShow = matchesKeyword && matchesCategory;
+## Class Session 4 — Semantic HTML, forms and CSS
 
-card.classList.toggle("is-hidden", !shouldShow);
-```
+### 4.1 Structure describes purpose
 
-- `||` means OR: “all” is selected, or the card has the selected category class.
-- `&&` means AND: both the keyword and category conditions must be true.
-- `!shouldShow` reverses the decision: add the hiding class when the card should not show.
+![Meaningful page regions and matching label/control identifiers.](images/07_structure_and_labels.png)
 
-Use this logic inside `forEach()` to work through the cards. Count the visible cards and update the status using `textContent`. Use `1 activity found` for one result and `activities found` otherwise.
+Semantic HTML chooses elements by purpose:
 
-### Week 3 checks
+- header introduces the page.
+- main contains its main content.
+- section groups one topic, normally with a heading.
+- article is a complete piece that makes sense on its own.
+- div is suitable for a general group when no more meaningful element fits.
+- footer holds closing information.
 
-1. Empty keyword and All categories: eight cards and matching status.
-2. Matching keyword: only matching cards.
-3. No-match keyword such as `zzz`: no cards and zero results.
-4. Category only: only that category.
-5. Keyword and category together: both conditions apply.
-6. Clear: both controls reset and all eight cards return.
+For this practical, use one h1 for the page and an h2 for each section. Choose heading levels for hierarchy, not font size. CSS changes appearance; making a paragraph large does not give it heading meaning.
 
-Edit only `app.js` for the core practical. The HTML and CSS are prepared. Live filtering, Escape-to-clear and adding a card are optional extensions, not substitutes for the core checks.
-
-## Week 4 — Semantic HTML, forms and CSS
-
-### 8. Structure, connections and the box model
-
-![Semantic page regions, matching label and control identifiers, and nested content, padding, border and margin areas.](images/08_structure_forms_box_model.png)
-
-Semantic HTML uses elements that describe the role of the content. For this practical, use one main `h1` and logical section `h2` headings.
-
-```html
-<header>
-  <h1>Campus Workshop Sign-up</h1>
-</header>
-<main>
-  <section>
-    <h2>Choose your workshop</h2>
-    <!-- Place the prepared form here. -->
-  </section>
-</main>
-<footer>Campus workshop information</footer>
-```
-
-This is a structural illustration, not a replacement for the supplied page. Preserve the existing form and the JavaScript connections.
-
-### 9. Labels and browser validation
-
-A visible label's `for` value must match its control's `id`.
+### 4.2 Connect labels, controls and JavaScript
 
 ```html
 <label for="email">Email</label>
 <input id="email" name="email" type="email" required>
-
-<label for="workshop">Workshop</label>
-<select id="workshop" name="workshop" required>
-  <option value="">Choose a workshop</option>
-  <option value="example">Example workshop</option>
-</select>
 ```
 
-The example workshop option is illustrative; keep the supplied choices in your practical.
+The label's for value matches the control's id. Clicking the label should select the intended control. Give each control a suitable name and type. Make Full name, Email and Workshop required. The workshop prompt must have an empty value so it does not count as a valid choice.
 
-- `id` identifies the control and connects the label and prepared JavaScript.
-- `name` names the form field.
-- `type="email"` asks the browser to check email-format input; it does not prove that the address exists.
-- `required` blocks submission when a required value is missing.
-- The prompt's empty value prevents it from counting as a valid workshop selection.
+Keep these supplied IDs unchanged:
 
-Keep `workshop-form`, `full-name`, `email`, `workshop` and `status`. The prepared JavaScript depends on these IDs. Use fictional information only. This practical sends and stores nothing.
+workshop-form, full-name, email, workshop, status.
 
-### 10. Content, padding, border and margin
+The prepared JavaScript selects them. Read app.js, but do not rewrite it for the core tasks. Leave the browser's focus indicator intact; do not remove outlines.
 
-Read the nested boxes in the diagram from inside outward:
+### 4.3 Choose the correct spacing area
 
-| Area | Meaning | Example purpose |
-|---|---|---|
-| Content | The text or control content | The visible words |
-| Padding | Space inside the border | Stop text touching its border |
-| Border | The line around the padded content | Define the field boundary |
-| Margin | Space outside the border | Separate neighbouring field groups |
+![Nested content, padding, border and margin, with examples of which area to change.](images/08_box_model.png)
+
+- Content: the text or control content.
+- Padding: space between content and border.
+- Border: the visible edge around the padding and content.
+- Margin: space outside the border.
+
+If text touches a border, adjust padding. If field groups touch each other, adjust margin. If a button is cramped inside, adjust its padding. Change one property at a time and explain the visible effect.
+
+### 4.4 Diagnose the actual CSS conflict
+
+![The supplied ID-based paragraph selector overrides the message class colour.](images/09_css_conflict.png)
+
+The starter includes:
 
 ```css
-.field {
-  padding: 0.75rem;
-  border: 1px solid #777;
-  margin-bottom: 1rem;
+.message {
+  color: #27313b;
+}
+
+#workshop-form p {
+  color: #e6e7e9;
 }
 ```
 
-This is a teaching example, not a claim that the starter contains a `.field` class. Apply changes to selectors that match your HTML. Change one property at a time and inspect the result.
+Both rules can match the status paragraph. In these supplied rules, the ID-based selector is more specific, so its pale colour wins over .message. The .message.is-success rule adds font weight; it does not supply a replacement colour in the starter.
 
-### 11. Diagnose the unreadable status message
+After valid submission, inspect the status element in DevTools. Find the winning colour declaration and fix the conflicting cause. Removing or correcting the unwanted pale colour is a direct way to address it. Submit again and verify the message is readable. Explain which declaration won and why, not just that the text now looks better.
 
-Do not guess which CSS declaration is responsible:
+### 4.5 Campus Workshop Sign-up practical checks
 
-1. Complete valid fictional details and submit so the success state appears.
-2. Inspect the status element in DevTools.
-3. Find the applied colour/background declarations and rules that are crossed out.
-4. Identify the winning declaration and explain why it wins.
-5. Fix the cause and submit again to verify readable text.
+Use fictional details only. The prepared code gives a local confirmation; nothing is sent or stored. This is not a real booking service.
 
-Which rule wins depends on the competing rules, not simply which one is last. Record the actual declaration from your starter; this guide does not invent the culprit. Keep the built-in keyboard focus indicator: do not remove outlines.
-
-### Week 4 checks and evidence
-
-Record all ten required checks in `checks.md`: structure, labels, empty required fields, invalid email, unselected workshop, valid local confirmation, Tab and Enter, changed workshop and resubmission, winning CSS declaration, and spacing.
-
-In `README.md`, explain structure, form connections, the CSS conflict, spacing decisions and assistance received. Read but do not rewrite the prepared JavaScript for core work.
-
-## A debugging routine for every week
-
-1. Make one small change.
-2. Save, reload and read the Console.
-3. For DOM work, check the selected element and collection length.
-4. Check that the handler runs and reads the expected values.
-5. Check the decision before changing the page.
-6. Inspect the actual class, text and CSS rule.
-7. Compare the result with the required check.
-8. Record what happened rather than assuming it passed.
-
-## Submission reminders
-
-| Week | Required submission |
+| Action | Expected result |
 |---|---|
-| 1 | Completed `index.html` and `README.txt`; before Lesson 2 |
-| 2 | Follow the practical/Brightspace submission instructions; before Lesson 3 |
-| 3 | Completed `app.js` with supplied `index.html` and `styles.css`; follow Brightspace instructions |
-| 4 | `index.html`, `styles.css`, `app.js`, `README.md`, `checks.md`; before Lesson 5 |
+| Read regions and headings | Meaningful structure and hierarchy |
+| Click every visible label | Intended control selected |
+| Submit required fields empty | Browser blocks submission |
+| Enter alex as email | Email-format check rejects it |
+| Complete other fields but keep workshop prompt | Empty workshop choice rejected |
+| Submit valid fictional details | Readable local confirmation |
+| Use Tab and Enter | Controls reachable in order; Enter submits |
+| Change workshop and submit again | One current message reflects new choice |
+| Inspect fixed status rule | Readable text; winning declaration explained |
+| Inspect field spacing | Name the box area changed and explain why |
 
-Confirm exact deadlines and submission formats in Brightspace. Acknowledge help, including AI, where requested. Be able to explain the work you submit. Completing a practical is evidence of practice, not proof that every concept has been mastered.
+Record what actually happened in checks.md. Browser wording varies: check whether the rule is enforced, not its exact message.
 
-## Source materials
+In README.md, explain structure, form connections, the CSS conflict, spacing decisions and help received. Submit index.html, styles.css, app.js, README.md and checks.md before Class Session 5, following Brightspace instructions.
 
-Based on the supplied Week 1 Activity Finder brief; Week 2 Activity Finder brief and Functions and Data Quick Reference; Week 3 Activity Directory brief; and Week 4 Campus Workshop Sign-up brief. The diagrams and small illustrative examples were created for this companion guide. The original briefs remain authoritative for task scope and submission requirements.
+Optional after core completion: add an information section and justify its heading, compare padding/border combinations, or adapt the prepared code to show a workshop description.
+
+Sources: Lesson 04 lecture, Campus Workshop Sign-up brief, supplied CSS and JavaScript, README and checks template.
+
+## Final review — keep these distinctions clear
+
+| Do not confuse | Key difference |
+|---|---|
+| Console result / page update | Logging does not itself change the DOM |
+| return / console.log() | Send a result to caller / display information |
+| filter() / map() | Select items / transform items |
+| const / frozen contents | No reassignment / contents can still change |
+| One selected element / NodeList | Check null / inspect length and iterate |
+| Keyword OR category / keyword AND category | The directory requires both tests to pass |
+| Heading level / visual size | HTML hierarchy / CSS appearance |
+| Padding / margin | Inside the border / outside the border |
+| Local confirmation / actual registration | No information is sent or stored in Session 4 |
+
+Finish the required checks before optional challenges. Be ready to explain the work you submit, verify any AI assistance and acknowledge help.
+
+## Uploaded material used
+
+- FED_Lesson_01_HTML_CSS_JavaScript_Foundations.pdf
+- FED_Lesson_02_JavaScript_Functions_and_Data_Modelling-2.pdf
+- FED_Lesson_03_DOM_Interaction_and_Events-3.pdf
+- FED_Lesson_04_Semantic_HTML_Forms_CSS-4.pdf
+- FED_L01_Activity_Finder_Practical_Brief.docx and Session 1 README
+- FED_L02_Functions_and_Data_Quick_Reference-2.pdf
+- FED_L02_Activity_Finder_Practical_Brief-3.docx and Session 2 starter JavaScript
+- FED_L03_Practical_Brief_Activity_Directory-4.docx and Session 3 CSS
+- W4_Practical_Brief-6.docx and Session 4 CSS, JavaScript, README and checks template
+
+All diagrams were newly drawn to explain these supplied concepts. No external sources or additional course topics were used.
